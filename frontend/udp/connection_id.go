@@ -1,15 +1,9 @@
 package udp
 
 import (
-	"crypto/hmac"
-	"encoding/binary"
 	"hash"
 	"net"
 	"time"
-
-	sha256 "github.com/minio/sha256-simd"
-
-	"github.com/chihaya/chihaya/pkg/log"
 )
 
 // ttl is the duration a connection ID should be valid according to BEP 15.
@@ -20,14 +14,16 @@ const ttl = 2 * time.Minute
 // This is a wrapper around creating a new ConnectionIDGenerator and generating
 // an ID. It is recommended to use the generator for performance.
 func NewConnectionID(ip net.IP, now time.Time, key string) []byte {
-	return NewConnectionIDGenerator(key).Generate(ip, now)
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // ValidConnectionID determines whether a connection identifier is legitimate.
 // This is a wrapper around creating a new ConnectionIDGenerator and validating
 // the ID. It is recommended to use the generator for performance.
 func ValidConnectionID(connectionID []byte, ip net.IP, now time.Time, maxClockSkew time.Duration, key string) bool {
-	return NewConnectionIDGenerator(key).Validate(connectionID, ip, now, maxClockSkew)
+	_ = "STUB: not implemented"
+	return false
 }
 
 // A ConnectionIDGenerator is a reusable generator and validator for connection
@@ -55,21 +51,14 @@ type ConnectionIDGenerator struct {
 
 // NewConnectionIDGenerator creates a new connection ID generator.
 func NewConnectionIDGenerator(key string) *ConnectionIDGenerator {
-	return &ConnectionIDGenerator{
-		mac:     hmac.New(sha256.New, []byte(key)),
-		connID:  make([]byte, 8),
-		scratch: make([]byte, 32),
-	}
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // reset resets the generator.
 // This is called by other methods of the generator, it's not necessary to call
 // it after getting a generator from a pool.
-func (g *ConnectionIDGenerator) reset() {
-	g.mac.Reset()
-	g.connID = g.connID[:8]
-	g.scratch = g.scratch[:0]
-}
+func (g *ConnectionIDGenerator) reset() { _ = "STUB: not implemented"; return }
 
 // Generate generates an 8-byte connection ID as described in BEP 15 for the
 // given IP and the current time.
@@ -86,31 +75,12 @@ func (g *ConnectionIDGenerator) reset() {
 // will be reused, so it must not be referenced after returning the generator
 // to a pool and will be overwritten be subsequent calls to Generate!
 func (g *ConnectionIDGenerator) Generate(ip net.IP, now time.Time) []byte {
-	g.reset()
-
-	binary.BigEndian.PutUint32(g.connID, uint32(now.Unix()))
-
-	g.mac.Write(g.connID[:4])
-	g.mac.Write(ip)
-	g.scratch = g.mac.Sum(g.scratch)
-	copy(g.connID[4:8], g.scratch[:4])
-
-	log.Debug("generated connection ID", log.Fields{"ip": ip, "now": now, "connID": g.connID})
-	return g.connID
+	_ = "STUB: not implemented"
+	return nil
 }
 
 // Validate validates the given connection ID for an IP and the current time.
 func (g *ConnectionIDGenerator) Validate(connectionID []byte, ip net.IP, now time.Time, maxClockSkew time.Duration) bool {
-	ts := time.Unix(int64(binary.BigEndian.Uint32(connectionID[:4])), 0)
-	log.Debug("validating connection ID", log.Fields{"connID": connectionID, "ip": ip, "ts": ts, "now": now})
-	if now.After(ts.Add(ttl)) || ts.After(now.Add(maxClockSkew)) {
-		return false
-	}
-
-	g.reset()
-
-	g.mac.Write(connectionID[:4])
-	g.mac.Write(ip)
-	g.scratch = g.mac.Sum(g.scratch)
-	return hmac.Equal(g.scratch[:4], connectionID[4:])
+	_ = "STUB: not implemented"
+	return false
 }

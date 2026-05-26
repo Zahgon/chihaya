@@ -5,8 +5,6 @@ package middleware
 import (
 	"errors"
 	"sync"
-
-	yaml "gopkg.in/yaml.v2"
 )
 
 var (
@@ -30,39 +28,15 @@ type Driver interface {
 //
 // If called twice with the same name, the name is blank, or if the provided
 // Driver is nil, this function panics.
-func RegisterDriver(name string, d Driver) {
-	if name == "" {
-		panic("middleware: could not register a Driver with an empty name")
-	}
-	if d == nil {
-		panic("middleware: could not register a nil Driver")
-	}
-
-	driversM.Lock()
-	defer driversM.Unlock()
-
-	if _, dup := drivers[name]; dup {
-		panic("middleware: RegisterDriver called twice for " + name)
-	}
-
-	drivers[name] = d
-}
+func RegisterDriver(name string, d Driver) { _ = "STUB: not implemented"; return }
 
 // New attempts to initialize a new middleware instance from the
 // list of registered Drivers.
 //
 // If a driver does not exist, returns ErrDriverDoesNotExist.
 func New(name string, optionBytes []byte) (Hook, error) {
-	driversM.RLock()
-	defer driversM.RUnlock()
-
-	var d Driver
-	d, ok := drivers[name]
-	if !ok {
-		return nil, ErrDriverDoesNotExist
-	}
-
-	return d.NewHook(optionBytes)
+	_ = "STUB: not implemented"
+	return *new(Hook), nil
 }
 
 // HookConfig is the generic configuration format used for all registered Hooks.
@@ -73,22 +47,9 @@ type HookConfig struct {
 
 // HooksFromHookConfigs is a utility function for initializing Hooks in bulk.
 func HooksFromHookConfigs(cfgs []HookConfig) (hooks []Hook, err error) {
-	for _, cfg := range cfgs {
+	_ = "STUB: not implemented"
+	return nil,
+
 		// Marshal the options back into bytes.
-		var optionBytes []byte
-		optionBytes, err = yaml.Marshal(cfg.Options)
-		if err != nil {
-			return
-		}
-
-		var h Hook
-		h, err = New(cfg.Name, optionBytes)
-		if err != nil {
-			return
-		}
-
-		hooks = append(hooks, h)
-	}
-
-	return
+		nil
 }

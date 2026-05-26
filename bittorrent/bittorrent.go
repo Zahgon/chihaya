@@ -4,7 +4,6 @@
 package bittorrent
 
 import (
-	"fmt"
 	"net"
 	"time"
 
@@ -17,38 +16,18 @@ type PeerID [20]byte
 // PeerIDFromBytes creates a PeerID from a byte slice.
 //
 // It panics if b is not 20 bytes long.
-func PeerIDFromBytes(b []byte) PeerID {
-	if len(b) != 20 {
-		panic("peer ID must be 20 bytes")
-	}
-
-	var buf [20]byte
-	copy(buf[:], b)
-	return PeerID(buf)
-}
+func PeerIDFromBytes(b []byte) PeerID { _ = "STUB: not implemented"; return *new(PeerID) }
 
 // String implements fmt.Stringer, returning the base16 encoded PeerID.
-func (p PeerID) String() string {
-	return fmt.Sprintf("%x", p[:])
-}
+func (p PeerID) String() string { _ = "STUB: not implemented"; return "" }
 
 // RawString returns a 20-byte string of the raw bytes of the ID.
-func (p PeerID) RawString() string {
-	return string(p[:])
-}
+func (p PeerID) RawString() string { _ = "STUB: not implemented"; return "" }
 
 // PeerIDFromString creates a PeerID from a string.
 //
 // It panics if s is not 20 bytes long.
-func PeerIDFromString(s string) PeerID {
-	if len(s) != 20 {
-		panic("peer ID must be 20 bytes")
-	}
-
-	var buf [20]byte
-	copy(buf[:], s)
-	return PeerID(buf)
-}
+func PeerIDFromString(s string) PeerID { _ = "STUB: not implemented"; return *new(PeerID) }
 
 // InfoHash represents an infohash.
 type InfoHash [20]byte
@@ -56,38 +35,18 @@ type InfoHash [20]byte
 // InfoHashFromBytes creates an InfoHash from a byte slice.
 //
 // It panics if b is not 20 bytes long.
-func InfoHashFromBytes(b []byte) InfoHash {
-	if len(b) != 20 {
-		panic("infohash must be 20 bytes")
-	}
-
-	var buf [20]byte
-	copy(buf[:], b)
-	return InfoHash(buf)
-}
+func InfoHashFromBytes(b []byte) InfoHash { _ = "STUB: not implemented"; return *new(InfoHash) }
 
 // InfoHashFromString creates an InfoHash from a string.
 //
 // It panics if s is not 20 bytes long.
-func InfoHashFromString(s string) InfoHash {
-	if len(s) != 20 {
-		panic("infohash must be 20 bytes")
-	}
-
-	var buf [20]byte
-	copy(buf[:], s)
-	return InfoHash(buf)
-}
+func InfoHashFromString(s string) InfoHash { _ = "STUB: not implemented"; return *new(InfoHash) }
 
 // String implements fmt.Stringer, returning the base16 encoded InfoHash.
-func (i InfoHash) String() string {
-	return fmt.Sprintf("%x", i[:])
-}
+func (i InfoHash) String() string { _ = "STUB: not implemented"; return "" }
 
 // RawString returns a 20-byte string of the raw bytes of the InfoHash.
-func (i InfoHash) RawString() string {
-	return string(i[:])
-}
+func (i InfoHash) RawString() string { _ = "STUB: not implemented"; return "" }
 
 // AnnounceRequest represents the parsed parameters from an announce request.
 type AnnounceRequest struct {
@@ -107,22 +66,7 @@ type AnnounceRequest struct {
 }
 
 // LogFields renders the current response as a set of log fields.
-func (r AnnounceRequest) LogFields() log.Fields {
-	return log.Fields{
-		"event":           r.Event,
-		"infoHash":        r.InfoHash,
-		"compact":         r.Compact,
-		"eventProvided":   r.EventProvided,
-		"numWantProvided": r.NumWantProvided,
-		"ipProvided":      r.IPProvided,
-		"numWant":         r.NumWant,
-		"left":            r.Left,
-		"downloaded":      r.Downloaded,
-		"uploaded":        r.Uploaded,
-		"peer":            r.Peer,
-		"params":          r.Params,
-	}
-}
+func (r AnnounceRequest) LogFields() log.Fields { _ = "STUB: not implemented"; return *new(log.Fields) }
 
 // AnnounceResponse represents the parameters used to create an announce
 // response.
@@ -138,14 +82,8 @@ type AnnounceResponse struct {
 
 // LogFields renders the current response as a set of log fields.
 func (r AnnounceResponse) LogFields() log.Fields {
-	return log.Fields{
-		"compact":     r.Compact,
-		"complete":    r.Complete,
-		"interval":    r.Interval,
-		"minInterval": r.MinInterval,
-		"ipv4Peers":   r.IPv4Peers,
-		"ipv6Peers":   r.IPv6Peers,
-	}
+	_ = "STUB: not implemented"
+	return *new(log.Fields)
 }
 
 // ScrapeRequest represents the parsed parameters from a scrape request.
@@ -156,13 +94,7 @@ type ScrapeRequest struct {
 }
 
 // LogFields renders the current response as a set of log fields.
-func (r ScrapeRequest) LogFields() log.Fields {
-	return log.Fields{
-		"addressFamily": r.AddressFamily,
-		"infoHashes":    r.InfoHashes,
-		"params":        r.Params,
-	}
-}
+func (r ScrapeRequest) LogFields() log.Fields { _ = "STUB: not implemented"; return *new(log.Fields) }
 
 // ScrapeResponse represents the parameters used to create a scrape response.
 //
@@ -173,11 +105,7 @@ type ScrapeResponse struct {
 }
 
 // LogFields renders the current response as a set of Logrus fields.
-func (sr ScrapeResponse) LogFields() log.Fields {
-	return log.Fields{
-		"files": sr.Files,
-	}
-}
+func (sr ScrapeResponse) LogFields() log.Fields { _ = "STUB: not implemented"; return *new(log.Fields) }
 
 // Scrape represents the state of a swarm that is returned in a scrape response.
 type Scrape struct {
@@ -190,16 +118,7 @@ type Scrape struct {
 // AddressFamily is the address family of an IP address.
 type AddressFamily uint8
 
-func (af AddressFamily) String() string {
-	switch af {
-	case IPv4:
-		return "IPv4"
-	case IPv6:
-		return "IPv6"
-	default:
-		panic("tried to print unknown AddressFamily")
-	}
-}
+func (af AddressFamily) String() string { _ = "STUB: not implemented"; return "" }
 
 // AddressFamily constants.
 const (
@@ -213,9 +132,7 @@ type IP struct {
 	AddressFamily
 }
 
-func (ip IP) String() string {
-	return ip.IP.String()
-}
+func (ip IP) String() string { _ = "STUB: not implemented"; return "" }
 
 // Peer represents the connection details of a peer that is returned in an
 // announce response.
@@ -228,28 +145,20 @@ type Peer struct {
 // String implements fmt.Stringer to return a human-readable representation.
 // The string will have the format <PeerID>@[<IP>]:<port>, for example
 // "0102030405060708090a0b0c0d0e0f1011121314@[10.11.12.13]:1234"
-func (p Peer) String() string {
-	return fmt.Sprintf("%s@[%s]:%d", p.ID.String(), p.IP.String(), p.Port)
-}
+func (p Peer) String() string { _ = "STUB: not implemented"; return "" }
 
 // LogFields renders the current peer as a set of Logrus fields.
-func (p Peer) LogFields() log.Fields {
-	return log.Fields{
-		"ID":   p.ID,
-		"IP":   p.IP,
-		"port": p.Port,
-	}
-}
+func (p Peer) LogFields() log.Fields { _ = "STUB: not implemented"; return *new(log.Fields) }
 
 // Equal reports whether p and x are the same.
-func (p Peer) Equal(x Peer) bool { return p.EqualEndpoint(x) && p.ID == x.ID }
+func (p Peer) Equal(x Peer) bool { _ = "STUB: not implemented"; return false }
 
 // EqualEndpoint reports whether p and x have the same endpoint.
-func (p Peer) EqualEndpoint(x Peer) bool { return p.Port == x.Port && p.IP.Equal(x.IP.IP) }
+func (p Peer) EqualEndpoint(x Peer) bool { _ = "STUB: not implemented"; return false }
 
 // ClientError represents an error that should be exposed to the client over
 // the BitTorrent protocol implementation.
 type ClientError string
 
 // Error implements the error interface for ClientError.
-func (c ClientError) Error() string { return string(c) }
+func (c ClientError) Error() string { _ = "STUB: not implemented"; return "" }

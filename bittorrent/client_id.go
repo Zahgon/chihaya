@@ -5,18 +5,4 @@ package bittorrent
 type ClientID [6]byte
 
 // NewClientID parses a ClientID from a PeerID.
-func NewClientID(pid PeerID) ClientID {
-	var cid ClientID
-	length := len(pid)
-	if length >= 6 {
-		if pid[0] == '-' {
-			if length >= 7 {
-				copy(cid[:], pid[1:7])
-			}
-		} else {
-			copy(cid[:], pid[:6])
-		}
-	}
-
-	return cid
-}
+func NewClientID(pid PeerID) ClientID { _ = "STUB: not implemented"; return *new(ClientID) }

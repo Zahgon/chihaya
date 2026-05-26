@@ -1,12 +1,6 @@
 package main
 
 import (
-	"errors"
-	"io/ioutil"
-	"os"
-
-	yaml "gopkg.in/yaml.v2"
-
 	"github.com/chihaya/chihaya/frontend/http"
 	"github.com/chihaya/chihaya/frontend/udp"
 	"github.com/chihaya/chihaya/middleware"
@@ -39,22 +33,10 @@ type Config struct {
 }
 
 // PreHookNames returns only the names of the configured middleware.
-func (cfg Config) PreHookNames() (names []string) {
-	for _, hook := range cfg.PreHooks {
-		names = append(names, hook.Name)
-	}
-
-	return
-}
+func (cfg Config) PreHookNames() (names []string) { _ = "STUB: not implemented"; return nil }
 
 // PostHookNames returns only the names of the configured middleware.
-func (cfg Config) PostHookNames() (names []string) {
-	for _, hook := range cfg.PostHooks {
-		names = append(names, hook.Name)
-	}
-
-	return
-}
+func (cfg Config) PostHookNames() (names []string) { _ = "STUB: not implemented"; return nil }
 
 // ConfigFile represents a namespaced YAML configation file.
 type ConfigFile struct {
@@ -65,27 +47,4 @@ type ConfigFile struct {
 // configuration file.
 //
 // It supports relative and absolute paths and environment variables.
-func ParseConfigFile(path string) (*ConfigFile, error) {
-	if path == "" {
-		return nil, errors.New("no config path specified")
-	}
-
-	f, err := os.Open(os.ExpandEnv(path))
-	if err != nil {
-		return nil, err
-	}
-	defer f.Close()
-
-	contents, err := ioutil.ReadAll(f)
-	if err != nil {
-		return nil, err
-	}
-
-	var cfgFile ConfigFile
-	err = yaml.Unmarshal(contents, &cfgFile)
-	if err != nil {
-		return nil, err
-	}
-
-	return &cfgFile, nil
-}
+func ParseConfigFile(path string) (*ConfigFile, error) { _ = "STUB: not implemented"; return nil, nil }

@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"context"
-	"errors"
 
 	"github.com/chihaya/chihaya/bittorrent"
 	"github.com/chihaya/chihaya/storage"
@@ -31,42 +30,19 @@ type swarmInteractionHook struct {
 }
 
 func (h *swarmInteractionHook) HandleAnnounce(ctx context.Context, req *bittorrent.AnnounceRequest, resp *bittorrent.AnnounceResponse) (_ context.Context, err error) {
-	if ctx.Value(SkipSwarmInteractionKey) != nil {
-		return ctx, nil
-	}
-
-	switch {
-	case req.Event == bittorrent.Stopped:
-		err = h.store.DeleteSeeder(req.InfoHash, req.Peer)
-		if err != nil && !errors.Is(err, storage.ErrResourceDoesNotExist) {
-			return ctx, err
-		}
-
-		err = h.store.DeleteLeecher(req.InfoHash, req.Peer)
-		if err != nil && !errors.Is(err, storage.ErrResourceDoesNotExist) {
-			return ctx, err
-		}
-	case req.Event == bittorrent.Completed:
-		err = h.store.GraduateLeecher(req.InfoHash, req.Peer)
-		return ctx, err
-	case req.Left == 0:
-		// Completed events will also have Left == 0, but by making this
-		// an extra case we can treat "old" seeders differently from
-		// graduating leechers. (Calling PutSeeder is probably faster
-		// than calling GraduateLeecher.)
-		err = h.store.PutSeeder(req.InfoHash, req.Peer)
-		return ctx, err
-	default:
-		err = h.store.PutLeecher(req.InfoHash, req.Peer)
-		return ctx, err
-	}
-
-	return ctx, nil
+	_ = "STUB: not implemented"
+	return *new(context.Context), nil
 }
 
+// Completed events will also have Left == 0, but by making this
+// an extra case we can treat "old" seeders differently from
+// graduating leechers. (Calling PutSeeder is probably faster
+// than calling GraduateLeecher.)
+
 func (h *swarmInteractionHook) HandleScrape(ctx context.Context, _ *bittorrent.ScrapeRequest, _ *bittorrent.ScrapeResponse) (context.Context, error) {
+	_ = "STUB: not implemented"
 	// Scrapes have no effect on the swarm.
-	return ctx, nil
+	return *new(context.Context), nil
 }
 
 type skipResponseHook struct{}
@@ -91,57 +67,21 @@ type responseHook struct {
 }
 
 func (h *responseHook) HandleAnnounce(ctx context.Context, req *bittorrent.AnnounceRequest, resp *bittorrent.AnnounceResponse) (_ context.Context, err error) {
-	if ctx.Value(SkipResponseHookKey) != nil {
-		return ctx, nil
-	}
-
-	// Add the Scrape data to the response.
-	s := h.store.ScrapeSwarm(req.InfoHash, req.IP.AddressFamily)
-	resp.Incomplete = s.Incomplete
-	resp.Complete = s.Complete
-
-	err = h.appendPeers(req, resp)
-	return ctx, err
+	_ = "STUB: not implemented"
+	return *new(context.Context), nil
 }
 
+// Add the Scrape data to the response.
+
 func (h *responseHook) appendPeers(req *bittorrent.AnnounceRequest, resp *bittorrent.AnnounceResponse) error {
-	seeding := req.Left == 0
-	peers, err := h.store.AnnouncePeers(req.InfoHash, seeding, int(req.NumWant), req.Peer)
-	if err != nil && !errors.Is(err, storage.ErrResourceDoesNotExist) {
-		return err
-	}
-
-	// Some clients expect a minimum of their own peer representation returned to
-	// them if they are the only peer in a swarm.
-	if len(peers) == 0 {
-		if seeding {
-			resp.Complete++
-		} else {
-			resp.Incomplete++
-		}
-		peers = append(peers, req.Peer)
-	}
-
-	switch req.IP.AddressFamily {
-	case bittorrent.IPv4:
-		resp.IPv4Peers = peers
-	case bittorrent.IPv6:
-		resp.IPv6Peers = peers
-	default:
-		panic("attempted to append peer that is neither IPv4 nor IPv6")
-	}
-
+	_ = "STUB: not implemented"
 	return nil
 }
 
+// Some clients expect a minimum of their own peer representation returned to
+// them if they are the only peer in a swarm.
+
 func (h *responseHook) HandleScrape(ctx context.Context, req *bittorrent.ScrapeRequest, resp *bittorrent.ScrapeResponse) (context.Context, error) {
-	if ctx.Value(SkipResponseHookKey) != nil {
-		return ctx, nil
-	}
-
-	for _, infoHash := range req.InfoHashes {
-		resp.Files = append(resp.Files, h.store.ScrapeSwarm(infoHash, req.AddressFamily))
-	}
-
-	return ctx, nil
+	_ = "STUB: not implemented"
+	return *new(context.Context), nil
 }

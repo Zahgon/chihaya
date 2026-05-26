@@ -2,8 +2,6 @@
 // type assertion over reflection for performance.
 package bencode
 
-import "bytes"
-
 // Enforce that Dict implements the Marshaler interface.
 var _ Marshaler = Dict{}
 
@@ -12,15 +10,13 @@ type Dict map[string]interface{}
 
 // NewDict allocates the memory for a Dict.
 func NewDict() Dict {
-	return make(Dict)
+	_ = "STUB: not implemented"
+
+	// MarshalBencode implements the Marshaler interface for Dict.
+	return *new(Dict)
 }
 
-// MarshalBencode implements the Marshaler interface for Dict.
-func (d Dict) MarshalBencode() ([]byte, error) {
-	var buf bytes.Buffer
-	err := marshalMap(&buf, map[string]interface{}(d))
-	return buf.Bytes(), err
-}
+func (d Dict) MarshalBencode() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // Enforce that List implements the Marshaler interface.
 var _ Marshaler = List{}
@@ -29,13 +25,7 @@ var _ Marshaler = List{}
 type List []interface{}
 
 // MarshalBencode implements the Marshaler interface for List.
-func (l List) MarshalBencode() ([]byte, error) {
-	var buf bytes.Buffer
-	err := marshalList(&buf, []interface{}(l))
-	return buf.Bytes(), err
-}
+func (l List) MarshalBencode() ([]byte, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // NewList allocates the memory for a List.
-func NewList() List {
-	return make(List, 0)
-}
+func NewList() List { _ = "STUB: not implemented"; return *new(List) }

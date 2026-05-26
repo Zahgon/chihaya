@@ -1,7 +1,6 @@
 package udp
 
 import (
-	"errors"
 	"time"
 
 	"github.com/prometheus/client_golang/prometheus"
@@ -25,26 +24,6 @@ var promResponseDurationMilliseconds = prometheus.NewHistogramVec(
 // recordResponseDuration records the duration of time to respond to a UDP
 // Request in milliseconds.
 func recordResponseDuration(action string, af *bittorrent.AddressFamily, err error, duration time.Duration) {
-	var errString string
-	if err != nil {
-		var clientErr bittorrent.ClientError
-		if errors.As(err, &clientErr) {
-			errString = clientErr.Error()
-		} else {
-			errString = "internal error"
-		}
-	}
-
-	var afString string
-	if af == nil {
-		afString = "Unknown"
-	} else if *af == bittorrent.IPv4 {
-		afString = "IPv4"
-	} else if *af == bittorrent.IPv6 {
-		afString = "IPv6"
-	}
-
-	promResponseDurationMilliseconds.
-		WithLabelValues(action, afString, errString).
-		Observe(float64(duration.Nanoseconds()) / float64(time.Millisecond))
+	_ = "STUB: not implemented"
+	return
 }

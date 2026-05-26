@@ -9,7 +9,6 @@ package timecache
 
 import (
 	"sync"
-	"sync/atomic"
 	"time"
 )
 
@@ -40,88 +39,40 @@ type TimeCache struct {
 
 // New returns a new TimeCache instance.
 // The TimeCache must be started to update the time.
-func New() *TimeCache {
-	return &TimeCache{
-		clock:   time.Now().UnixNano(),
-		closed:  make(chan struct{}),
-		running: make(chan struct{}),
-	}
-}
+func New() *TimeCache { _ = "STUB: not implemented"; return nil }
 
 // Run runs the TimeCache, updating the cached clock value once every interval
 // and blocks until Stop is called.
-func (t *TimeCache) Run(interval time.Duration) {
-	t.m.Lock()
-	select {
-	case <-t.running:
-		panic("Run called multiple times")
-	default:
-	}
-	close(t.running)
-	t.m.Unlock()
-
-	tick := time.NewTicker(interval)
-	defer tick.Stop()
-	for {
-		select {
-		case <-t.closed:
-			tick.Stop()
-			return
-		case now := <-tick.C:
-			atomic.StoreInt64(&t.clock, now.UnixNano())
-		}
-	}
-}
+func (t *TimeCache) Run(interval time.Duration) { _ = "STUB: not implemented"; return }
 
 // Stop stops the TimeCache.
 // The cached time remains valid but will not be updated anymore.
 // A TimeCache can not be restarted. Construct a new one instead.
 // Calling Stop again is a no-op.
-func (t *TimeCache) Stop() {
-	t.m.Lock()
-	defer t.m.Unlock()
-
-	select {
-	case <-t.closed:
-		return
-	default:
-	}
-	close(t.closed)
-}
+func (t *TimeCache) Stop() { _ = "STUB: not implemented"; return }
 
 // Now returns the cached time as a time.Time value.
-func (t *TimeCache) Now() time.Time {
-	return time.Unix(0, atomic.LoadInt64(&t.clock))
-}
+func (t *TimeCache) Now() time.Time { _ = "STUB: not implemented"; return *new(time.Time) }
 
 // NowUnixNano returns the cached time as nanoseconds since the Unix Epoch.
-func (t *TimeCache) NowUnixNano() int64 {
-	return atomic.LoadInt64(&t.clock)
-}
+func (t *TimeCache) NowUnixNano() int64 { _ = "STUB: not implemented"; return 0 }
 
 // NowUnix returns the cached time as seconds since the Unix Epoch.
 func (t *TimeCache) NowUnix() int64 {
+	_ = "STUB: not implemented"
 	// Adopted from time.Unix
-	nsec := atomic.LoadInt64(&t.clock)
-	sec := nsec / 1e9
-	nsec -= sec * 1e9
-	if nsec < 0 {
-		sec--
-	}
-	return sec
+	return 0
 }
 
 // Now calls Now on the global TimeCache instance.
 func Now() time.Time {
-	return t.Now()
+	_ = "STUB: not implemented"
+
+	// NowUnixNano calls NowUnixNano on the global TimeCache instance.
+	return *new(time.Time)
 }
 
-// NowUnixNano calls NowUnixNano on the global TimeCache instance.
-func NowUnixNano() int64 {
-	return t.NowUnixNano()
-}
+func NowUnixNano() int64 { _ = "STUB: not implemented"; return 0 }
 
 // NowUnix calls NowUnix on the global TimeCache instance.
-func NowUnix() int64 {
-	return t.NowUnix()
-}
+func NowUnix() int64 { _ = "STUB: not implemented"; return 0 }

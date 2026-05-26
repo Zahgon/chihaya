@@ -15,26 +15,25 @@ type Result <-chan []error
 
 // Done adds zero or more errors to the Channel and closes it, indicating the
 // caller has finished stopping. It should be called exactly once.
-func (ch Channel) Done(errs ...error) {
-	if len(errs) > 0 && errs[0] != nil {
-		ch <- errs
-	}
-	close(ch)
-}
+func (ch Channel) Done(errs ...error) { _ = "STUB: not implemented"; return }
 
 // Result converts a Channel to a Result.
 func (ch Channel) Result() <-chan []error {
-	return ch
+	_ = "STUB: not implemented"
+
+	// Wait blocks until Done() is called on the underlying Channel and returns any
+	// errors. It should be called exactly once.
+	return nil
 }
 
-// Wait blocks until Done() is called on the underlying Channel and returns any
-// errors. It should be called exactly once.
 func (r Result) Wait() []error {
-	return <-r
+	_ = "STUB: not implemented"
+
+	// AlreadyStopped is a closed error channel to be used by Funcs when
+	// an element was already stopped.
+	return nil
 }
 
-// AlreadyStopped is a closed error channel to be used by Funcs when
-// an element was already stopped.
 var AlreadyStopped Result
 
 // AlreadyStoppedFunc is a Func that returns AlreadyStopped.
@@ -68,58 +67,17 @@ type Group struct {
 }
 
 // NewGroup allocates a new Group.
-func NewGroup() *Group {
-	return &Group{
-		stoppables: make([]Func, 0),
-	}
-}
+func NewGroup() *Group { _ = "STUB: not implemented"; return nil }
 
 // Add appends a Stopper to the Group.
-func (cg *Group) Add(toAdd Stopper) {
-	cg.Lock()
-	defer cg.Unlock()
-
-	cg.stoppables = append(cg.stoppables, toAdd.Stop)
-}
+func (cg *Group) Add(toAdd Stopper) { _ = "STUB: not implemented"; return }
 
 // AddFunc appends a Func to the Group.
-func (cg *Group) AddFunc(toAddFunc Func) {
-	cg.Lock()
-	defer cg.Unlock()
-
-	cg.stoppables = append(cg.stoppables, toAddFunc)
-}
+func (cg *Group) AddFunc(toAddFunc Func) { _ = "STUB: not implemented"; return }
 
 // Stop stops all members of the Group.
 //
 // Stopping will be done in a concurrent fashion.
 // The slice of errors returned contains all errors returned by stopping the
 // members.
-func (cg *Group) Stop() Result {
-	cg.Lock()
-	defer cg.Unlock()
-
-	whenDone := make(Channel)
-
-	waitChannels := make([]Result, 0, len(cg.stoppables))
-	for _, toStop := range cg.stoppables {
-		waitFor := toStop()
-		if waitFor == nil {
-			panic("received a nil chan from Stop")
-		}
-		waitChannels = append(waitChannels, waitFor)
-	}
-
-	go func() {
-		var errors []error
-		for _, waitForMe := range waitChannels {
-			childErrors := waitForMe.Wait()
-			if len(childErrors) > 0 {
-				errors = append(errors, childErrors...)
-			}
-		}
-		whenDone.Done(errors...)
-	}()
-
-	return whenDone.Result()
-}
+func (cg *Group) Stop() Result { _ = "STUB: not implemented"; return *new(Result) }

@@ -2,7 +2,6 @@ package bittorrent
 
 import (
 	"errors"
-	"strings"
 )
 
 // ErrUnknownEvent is returned when New fails to return an event.
@@ -46,19 +45,7 @@ func init() {
 }
 
 // NewEvent returns the proper Event given a string.
-func NewEvent(eventStr string) (Event, error) {
-	if e, ok := stringToEvent[strings.ToLower(eventStr)]; ok {
-		return e, nil
-	}
-
-	return None, ErrUnknownEvent
-}
+func NewEvent(eventStr string) (Event, error) { _ = "STUB: not implemented"; return *new(Event), nil }
 
 // String implements Stringer for an event.
-func (e Event) String() string {
-	if name, ok := eventToString[e]; ok {
-		return name
-	}
-
-	panic("bittorrent: event has no associated name")
-}
+func (e Event) String() string { _ = "STUB: not implemented"; return "" }

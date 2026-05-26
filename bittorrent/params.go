@@ -2,11 +2,6 @@ package bittorrent
 
 import (
 	"errors"
-	"net/url"
-	"strconv"
-	"strings"
-
-	"github.com/chihaya/chihaya/pkg/log"
 )
 
 // Params is used to fetch (optional) request parameters from an Announce.
@@ -76,14 +71,7 @@ type RouteParams []RouteParam
 // no value is matched, an empty string is returned. For example: a route of
 // "/announce/*param" matches on "/announce/". However, ByName("param") will
 // return an empty string.
-func (rp RouteParams) ByName(name string) string {
-	for _, p := range rp {
-		if p.Key == name {
-			return p.Value
-		}
-	}
-	return ""
-}
+func (rp RouteParams) ByName(name string) string { _ = "STUB: not implemented"; return "" }
 
 // ParseURLData parses a request URL or UDP URLData as defined in BEP41.
 // It expects a concatenated string of the request's path and query parts as
@@ -104,116 +92,50 @@ func (rp RouteParams) ByName(name string) string {
 // Also note that any error that is encountered during parsing is returned as a
 // ClientError, as this method is expected to be used to parse client-provided
 // data.
-func ParseURLData(urlData string) (*QueryParams, error) {
-	var path, query string
-
-	queryDelim := strings.IndexAny(urlData, "?")
-	if queryDelim == -1 {
-		path = urlData
-	} else {
-		path = urlData[:queryDelim]
-		query = urlData[queryDelim+1:]
-	}
-
-	q, err := parseQuery(query)
-	if err != nil {
-		return nil, ClientError(err.Error())
-	}
-	q.path = path
-	return q, nil
-}
+func ParseURLData(urlData string) (*QueryParams, error) { _ = "STUB: not implemented"; return nil, nil }
 
 // parseQuery parses a URL query into QueryParams.
 // The query is expected to exclude the delimiting '?'.
 func parseQuery(query string) (q *QueryParams, err error) {
+	_ = "STUB: not implemented"
 	// This is basically url.parseQuery, but with a map[string]string
 	// instead of map[string][]string for the values.
-	q = &QueryParams{
-		query:      query,
-		infoHashes: nil,
-		params:     make(map[string]string),
-	}
-
-	for query != "" {
-		key := query
-		if i := strings.IndexAny(key, "&;"); i >= 0 {
-			key, query = key[:i], key[i+1:]
-		} else {
-			query = ""
-		}
-		if key == "" {
-			continue
-		}
-		value := ""
-		if i := strings.Index(key, "="); i >= 0 {
-			key, value = key[:i], key[i+1:]
-		}
-		key, err = url.QueryUnescape(key)
-		if err != nil {
-			// QueryUnescape returns an error like "invalid escape: '%x'".
-			// But frontends record these errors to prometheus, which generates
-			// a lot of time series.
-			// We log it here for debugging instead.
-			log.Debug("failed to unescape query param key", log.Err(err))
-			return nil, ErrInvalidQueryEscape
-		}
-		value, err = url.QueryUnescape(value)
-		if err != nil {
-			// QueryUnescape returns an error like "invalid escape: '%x'".
-			// But frontends record these errors to prometheus, which generates
-			// a lot of time series.
-			// We log it here for debugging instead.
-			log.Debug("failed to unescape query param value", log.Err(err))
-			return nil, ErrInvalidQueryEscape
-		}
-
-		if key == "info_hash" {
-			if len(value) != 20 {
-				return nil, ErrInvalidInfohash
-			}
-			q.infoHashes = append(q.infoHashes, InfoHashFromString(value))
-		} else {
-			q.params[strings.ToLower(key)] = value
-		}
-	}
-
-	return q, nil
+	return nil, nil
 }
+
+// QueryUnescape returns an error like "invalid escape: '%x'".
+// But frontends record these errors to prometheus, which generates
+// a lot of time series.
+// We log it here for debugging instead.
+
+// QueryUnescape returns an error like "invalid escape: '%x'".
+// But frontends record these errors to prometheus, which generates
+// a lot of time series.
+// We log it here for debugging instead.
 
 // String returns a string parsed from a query. Every key can be returned as a
 // string because they are encoded in the URL as strings.
 func (qp *QueryParams) String(key string) (string, bool) {
-	value, ok := qp.params[key]
-	return value, ok
+	_ = "STUB: not implemented"
+	return "", false
 }
 
 // Uint returns a uint parsed from a query. After being called, it is safe to
 // cast the uint64 to your desired length.
 func (qp *QueryParams) Uint(key string, bitSize int) (uint64, error) {
-	str, exists := qp.params[key]
-	if !exists {
-		return 0, ErrKeyNotFound
-	}
-
-	val, err := strconv.ParseUint(str, 10, bitSize)
-	if err != nil {
-		return 0, err
-	}
-
-	return val, nil
+	_ = "STUB: not implemented"
+	return 0, nil
 }
 
 // InfoHashes returns a list of requested infohashes.
-func (qp *QueryParams) InfoHashes() []InfoHash {
-	return qp.infoHashes
-}
+func (qp *QueryParams) InfoHashes() []InfoHash { _ = "STUB: not implemented"; return nil }
 
 // RawPath returns the raw path from the parsed URL.
 func (qp *QueryParams) RawPath() string {
-	return qp.path
+	_ = "STUB: not implemented"
+
+	// RawQuery returns the raw query from the parsed URL.
+	return ""
 }
 
-// RawQuery returns the raw query from the parsed URL.
-func (qp *QueryParams) RawQuery() string {
-	return qp.query
-}
+func (qp *QueryParams) RawQuery() string { _ = "STUB: not implemented"; return "" }

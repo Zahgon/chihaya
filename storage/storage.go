@@ -119,37 +119,13 @@ type PeerStore interface {
 //
 // If called twice with the same name, the name is blank, or if the provided
 // Driver is nil, this function panics.
-func RegisterDriver(name string, d Driver) {
-	if name == "" {
-		panic("storage: could not register a Driver with an empty name")
-	}
-	if d == nil {
-		panic("storage: could not register a nil Driver")
-	}
-
-	driversM.Lock()
-	defer driversM.Unlock()
-
-	if _, dup := drivers[name]; dup {
-		panic("storage: RegisterDriver called twice for " + name)
-	}
-
-	drivers[name] = d
-}
+func RegisterDriver(name string, d Driver) { _ = "STUB: not implemented"; return }
 
 // NewPeerStore attempts to initialize a new PeerStore instance from
 // the list of registered Drivers.
 //
 // If a driver does not exist, returns ErrDriverDoesNotExist.
 func NewPeerStore(name string, cfg interface{}) (ps PeerStore, err error) {
-	driversM.RLock()
-	defer driversM.RUnlock()
-
-	var d Driver
-	d, ok := drivers[name]
-	if !ok {
-		return nil, ErrDriverDoesNotExist
-	}
-
-	return d.NewPeerStore(cfg)
+	_ = "STUB: not implemented"
+	return *new(PeerStore), nil
 }

@@ -10,30 +10,17 @@ type BytePool struct {
 }
 
 // New allocates a new BytePool with slices of equal length and capacity.
-func New(length int) *BytePool {
-	var bp BytePool
-	bp.Pool.New = func() interface{} {
-		b := make([]byte, length)
-		return &b
-	}
-	return &bp
-}
+func New(length int) *BytePool { _ = "STUB: not implemented"; return nil }
 
 // Get returns a byte slice from the pool.
-func (bp *BytePool) Get() *[]byte {
-	return bp.Pool.Get().(*[]byte)
-}
+func (bp *BytePool) Get() *[]byte { _ = "STUB: not implemented"; return nil }
 
 // Put returns a byte slice to the pool.
 func (bp *BytePool) Put(b *[]byte) {
-	*b = (*b)[:cap(*b)]
+	_ = "STUB: not implemented"
 
 	// Zero out the bytes.
 	// This specific expression is optimized by the compiler:
 	// https://github.com/golang/go/issues/5373.
-	for i := range *b {
-		(*b)[i] = 0
-	}
-
-	bp.Pool.Put(b)
+	return
 }
